@@ -91,13 +91,16 @@ public class MessageServer implements Runnable {
 					stopServer();
 				}
 			}else{
-				if(clientUnresponsiveCount >= 100){
+				if(clientUnresponsiveCount >= timeout_length){
 					stopServer();
 					clientUnresponsiveCount = 0;
 				}
+				Thread.sleep(1);
 				clientUnresponsiveCount++;
 			}
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
