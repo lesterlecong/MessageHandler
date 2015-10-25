@@ -1,4 +1,4 @@
-package messagehandler;
+package com.lesterprojects.messagehandler;
 
 import java.io.*;
 import java.net.*;
@@ -10,22 +10,22 @@ public class MessageServer implements Runnable {
 	private MessageHandler m_messageHandler;
 	private Socket m_socket;
 	private Thread m_thread;
-	private int clientUnresponsiveCount;
+	private int m_clientUnresponsiveCount;
 	private BufferedReader m_bufferedReader;
 	private PrintWriter m_printWriter;
 	
 	private boolean m_stopServer = false;
 	
-	private static final int timeout_length = 30000;
+	private static final int m_timeout_length = 30000;
 
 	
 	public MessageServer(String host, Socket socket, MessageHandler messageHandler) { 
 		m_messageHandler = messageHandler;
 		m_socket = socket;
 		m_host = host;
-		clientUnresponsiveCount = 0;
+		m_clientUnresponsiveCount = 0;
 		try {	
-			m_socket.setSoTimeout (timeout_length);
+			m_socket.setSoTimeout (m_timeout_length);
 		}
 		catch (SocketException se) {
 			System.err.println ("Unable to set socket option SO_TIMEOUT");
@@ -91,12 +91,12 @@ public class MessageServer implements Runnable {
 					stopServer();
 				}
 			}else{
-				if(clientUnresponsiveCount >= timeout_length){
+				if(m_clientUnresponsiveCount >= m_timeout_length){
 					stopServer();
-					clientUnresponsiveCount = 0;
+					m_clientUnresponsiveCount = 0;
 				}
 				Thread.sleep(1);
-				clientUnresponsiveCount++;
+				m_clientUnresponsiveCount++;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -116,6 +116,7 @@ public class MessageServer implements Runnable {
 				
 			for(String message : messages){
 				m_printWriter.print(message);
+				m_printWriter.flush();
 			}
 
 			m_messageHandler.clearMessages();
