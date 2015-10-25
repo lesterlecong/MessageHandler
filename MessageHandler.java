@@ -1,4 +1,4 @@
-package messagehandler;
+package com.lesterprojects.messagehandler;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package messagehandler;
+package com.lesterprojects.messagehandler;
 
 import java.net.ServerSocket;
 import java.net.Socket;
