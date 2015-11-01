@@ -5,20 +5,29 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.lesterprojects.messageparser.DatabaseMessageParser;
+import com.lesterprojects.messageparser.MessageParser;
+
 public class CouchbaseMessageHandler implements MessageHandler {
 	
 	private List<String> m_messages;
+	private DatabaseMessageParser m_parser;
 	
 	public CouchbaseMessageHandler(){
 		m_messages = new ArrayList<String>();
-		addMessage("Hello World this lester from earth can you reply on my message through skype, mail or facebook?");
-		addMessage("Hello World this lester from earth receive this message or else.....nothing :D");//sample
-	
 	}
 	
 	public void handleMessage(String message){
 		System.out.println("Handle message: " + message);
-		
+		if(m_parser != null){
+			m_parser.parse(message);
+			System.out.println("Database Info: " + m_parser.databaseInfo());
+			System.out.println("Data:" + m_parser.data().toString());
+		}
+	}
+	
+	public void addMessageParser(MessageParser messageParser){
+		m_parser = (DatabaseMessageParser) messageParser;
 	}
 	
 	public void addMessage(String message){
